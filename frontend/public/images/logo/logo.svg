@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圆形 -->
+  <circle cx="100" cy="100" r="95" fill="#4CAF50" />
+  
+  <!-- 叶子图案 -->
+  <path d="M100 40
+           C 60 40, 40 60, 40 100
+           C 40 140, 60 160, 100 160
+           C 140 160, 160 140, 160 100
+           C 160 60, 140 40, 100 40
+           Z" 
+        fill="#81C784" />
+  
+  <!-- 中心小圆 -->
+  <circle cx="100" cy="100" r="30" fill="#2E7D32" />
+  
+  <!-- 文字 -->
+  <text x="100" y="105" 
+        font-family="Arial, sans-serif" 
+        font-size="24" 
+        fill="white" 
+        text-anchor="middle" 
+        dominant-baseline="middle">
+    助农
+  </text>
+</svg> 

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400px" height="400px" viewBox="0 0 400 400" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>苹果</title>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle fill="#FF4D4F" cx="200" cy="200" r="180"/>
+        <path d="M200,100 C244.18278,100 280,135.81722 280,180 C280,224.18278 244.18278,260 200,260 C155.81722,260 120,224.18278 120,180 C120,135.81722 155.81722,100 200,100 Z" fill="#FFFFFF"/>
+    </g>
+</svg>

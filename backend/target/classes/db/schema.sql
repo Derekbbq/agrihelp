@@ -1,0 +1,84 @@
+CREATE DATABASE IF NOT EXISTS agrihelp DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE agrihelp;
+
+-- 用户表
+CREATE TABLE IF NOT EXISTS user (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    nickname VARCHAR(50),
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    role INT DEFAULT 0 COMMENT '0: 普通用户, 1: 商家, 2: 管理员',
+    status INT DEFAULT 0 COMMENT '0: 正常, 1: 禁用',
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted INT DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 商品表
+CREATE TABLE IF NOT EXISTS product (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL,
+    image VARCHAR(255),
+    seller_id BIGINT NOT NULL,
+    status INT DEFAULT 0 COMMENT '0: 上架, 1: 下架',
+    category VARCHAR(50),
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted INT DEFAULT 0,
+    FOREIGN KEY (seller_id) REFERENCES user(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 购物车表
+CREATE TABLE IF NOT EXISTS cart_item (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    quantity INT NOT NULL,
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted INT DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (product_id) REFERENCES product(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 订单表
+CREATE TABLE IF NOT EXISTS `order` (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    order_no VARCHAR(50) NOT NULL UNIQUE,
+    total_amount DECIMAL(10,2) NOT NULL,
+    status INT DEFAULT 0 COMMENT '0:待付款 1:待发货 2:待收货 3:已完成 4:已取消',
+    address VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    receiver_name VARCHAR(50) NOT NULL,
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted INT DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES user(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 订单项表
+CREATE TABLE IF NOT EXISTS order_item (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    order_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    product_name VARCHAR(100) NOT NULL,
+    product_image VARCHAR(255),
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted INT DEFAULT 0,
+    FOREIGN KEY (order_id) REFERENCES `order`(id),
+    FOREIGN KEY (product_id) REFERENCES product(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 插入管理员账号
+INSERT INTO user (username, password, nickname, role) 
+VALUES ('admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iAt6Z5EH', '管理员', 2);
